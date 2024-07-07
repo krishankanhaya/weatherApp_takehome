@@ -9,20 +9,20 @@ const Forecast = ({
   weatherData: WeatherData | undefined;
   tempUnit: boolean;
   day: number;
-  setDay: (day:number) => void
+  setDay: (day: number) => void;
 }) => {
-  if(!weatherData) {
-    return 'Loading....'
+  if (!weatherData) {
+    return <div>Loading....</div>;
   }
 
   function formatDateTime(dateString: string) {
     const date = new Date(dateString);
 
-    if (isNaN(date)) {
+    if (isNaN(date.getTime())) {
       throw new Error("Invalid date string");
     }
 
-    const options = {
+    const options: Intl.DateTimeFormatOptions = {
       weekday: "long",
     };
     const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
@@ -32,20 +32,19 @@ const Forecast = ({
     return formattedDate;
   }
 
-  const fsd = weatherData?.forecast?.forecastday?.map(
-    (days) => {
-      return {
-        day: formatDateTime(days?.date),
-        icon_url: days?.day?.condition?.icon,
-        max_temp: !tempUnit
-          ? " Max " + days.day?.maxtemp_c + "°C"
-          : " Max " + days.day.maxtemp_f + " °F",
-        min_temp: !tempUnit
-          ? " Min " + days.day?.mintemp_c + "°C"
-          : " Min " + days.day.mintemp_f + " °F",
-      };
-    }
-  );
+  const fsd = weatherData.forecast.forecastday.map((days) => {
+    return {
+      day: formatDateTime(days.date),
+      icon_url: "https:" + days.day.condition.icon,
+      max_temp: !tempUnit
+        ? `Max ${days.day.maxtemp_c}°C`
+        : `Max ${days.day.maxtemp_f}°F`,
+      min_temp: !tempUnit
+        ? `Min ${days.day.mintemp_c}°C`
+        : `Min ${days.day.mintemp_f}°F`,
+    };
+  });
+
   return (
     <div className="my-1 px-4 relative flex flex-col justify-center gap-4">
       <p className="font-semibold text-[1.2rem] text-center w-fit m-auto">
@@ -61,19 +60,19 @@ const Forecast = ({
                 day === index ? "bg-[#eff6ff]" : "bg-white"
               }`}
             >
-              <h3>{item?.day}</h3>
+              <h3>{item.day}</h3>
               <img
-                src={item?.icon_url}
+                src={item.icon_url}
                 alt="cloud-img"
                 width={"50px"}
                 height={"50px"}
               />
               <div className="flex flex-row justify-center gap-[3px]">
                 <span className="text-[.8rem] opacity-40 ">
-                  {item?.min_temp}
+                  {item.min_temp}
                 </span>
                 <span className="-mt-1">-</span>
-                <span className="text-[.8rem] ">{item?.max_temp}</span>
+                <span className="text-[.8rem] ">{item.max_temp}</span>
               </div>
             </div>
           );
@@ -83,4 +82,4 @@ const Forecast = ({
   );
 };
 
-export default Forecast
+export default Forecast;

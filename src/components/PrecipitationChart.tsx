@@ -25,18 +25,18 @@ const PrecipitationChart = ({
   weatherData,
   tempUnit,
   day,
-  setHour
+  setHour,
 }: {
   weatherData: WeatherData | undefined;
   tempUnit: boolean;
   day: number;
-  setHour: (hour:number) => void;
+  setHour: (hour: number) => void;
 }) => {
   if (!weatherData) {
-    return "Loading...";
+    return <div>Loading...</div>;
   }
 
-  const forecastData = weatherData?.forecast?.forecastday?.map((day) => {
+  const forecastData = weatherData.forecast?.forecastday?.map((day) => {
     return day?.hour?.map((hour) => {
       return {
         icon_url: "https:" + hour.condition.icon,
@@ -53,17 +53,19 @@ const PrecipitationChart = ({
     });
   });
 
-  const tempGraphData = forecastData[day]?.map((item) => {
+  const tempGraphData = forecastData?.[day]?.map((item) => {
     const hour = new Date(item?.time).getHours();
     return {
       temp: !tempUnit ? item.precip_in : item.precip_mm,
-      hour: hour >= 12 ? hour + " pm" : hour + " am",
+      hour: hour >= 12 ? `${hour} pm` : `${hour} am`,
     };
   });
 
-  const handleGraphClicks = (event, elements) => {
+  const handleGraphClicks = (
+    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+    elements: { datasetIndex: number; index: number }[]
+  ) => {
     if (elements.length > 0) {
-      const datasetIndex = elements[0].datasetIndex;
       const index = elements[0].index;
       setHour(index);
     }
@@ -73,13 +75,13 @@ const PrecipitationChart = ({
   const temp_data = tempGraphData?.map((item) => item.temp);
 
   const data = {
-    labels: [...label_data],
+    labels: label_data || [],
     datasets: [
       {
         label: !tempUnit
           ? "Precipitation ( Inches )"
           : "Precipitation ( Millimeters )",
-        data: [...temp_data],
+        data: temp_data || [],
         backgroundColor: "#89DAFF",
         borderColor: "#89DAFF",
         tension: 0.5,

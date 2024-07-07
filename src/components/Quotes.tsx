@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { getQuotes } from "../apis/getQuotes";
 
+type Quote = {
+  quote: string;
+  author: string;
+};
+
 const Quotes = () => {
-  const [quotes, setQuotes] = useState();
+  const [quotes, setQuotes] = useState<Quote | null>(null);
+
   useEffect(() => {
     const getNewQuotes = async () => {
       const res = await getQuotes();

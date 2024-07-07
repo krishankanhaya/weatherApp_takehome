@@ -25,16 +25,17 @@ const LinearGraph = ({
   weatherData,
   day,
   tempUnit,
-  setHour
+  setHour,
 }: {
   weatherData: WeatherData | undefined;
   tempUnit: boolean;
   day: number;
-  setHour:(hour:number) => void;
+  setHour: (hour: number) => void;
 }) => {
   if (!weatherData) {
-    return "Loading...";
+    return <div>Loading...</div>;
   }
+
   const forecastData = weatherData?.forecast?.forecastday?.map((day) => {
     return day?.hour?.map((hour) => {
       return {
@@ -52,19 +53,18 @@ const LinearGraph = ({
     });
   });
 
-  const tempGraphData = forecastData[day]?.map((item) => {
+  const tempGraphData = forecastData?.[day]?.map((item) => {
     const hour = new Date(item?.time).getHours();
     return {
       temp: !tempUnit ? item.temp_c : item.temp_f,
-      hour: hour >= 12 ? hour + " pm" : hour + " am",
+      hour: hour >= 12 ? `${hour} pm` : `${hour} am`,
     };
   });
 
-  const handleGraphClicks = (event, elements) => {
+  const handleGraphClicks = (event: any, elements: any) => {
     if (elements.length > 0) {
-      const datasetIndex = elements[0].datasetIndex;
       const index = elements[0].index;
-      setHour(index)
+      setHour(index);
     }
   };
 
@@ -72,11 +72,11 @@ const LinearGraph = ({
   const temp_data = tempGraphData?.map((item) => item.temp);
 
   const data = {
-    labels: [...label_data],
+    labels: label_data || [],
     datasets: [
       {
         label: !tempUnit ? "Temp ( °C )" : "Temp ( °F )",
-        data: [...temp_data],
+        data: temp_data || [],
         backgroundColor: "#fde047",
         borderColor: "#fde047",
         tension: 0.5,
