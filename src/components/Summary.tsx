@@ -16,12 +16,13 @@ const Summary = ({
   if (!weatherData) {
     return <div>Loading...</div>;
   }
-  function formatDateTime(dateString:string) {
+
+  function formatDateTime(dateString: string) {
     // Create a new Date object from the input string
     const date = new Date(dateString);
 
     // Format the day and time
-    const options = {
+    const options: any = {
       weekday: "long",
       hour: "numeric",
       minute: "numeric",
@@ -50,21 +51,25 @@ const Summary = ({
     }))
   );
 
-  const summaryData = forecastData[day][hour];
+  const summaryData: any = forecastData?.[day]?.[hour];
 
   const toggleTempUnit = () => {
     setTempUnit((prev) => !prev);
   };
 
+  if (!summaryData) {
+    return <div>Loading...</div>;
+  }
+
   let temp;
   let precip;
   let wind;
   if (tempUnit === false) {
-    temp = Math.ceil(summaryData?.temp_c);
+    temp = Math.ceil(summaryData?.temp_c ?? 0);
     precip = summaryData?.precip_in;
     wind = summaryData?.wind_kph;
   } else {
-    temp = Math.ceil(summaryData?.temp_f);
+    temp = Math.ceil(summaryData?.temp_f ?? 0);
     precip = summaryData?.precip_mm;
     wind = summaryData?.wind_mph;
   }
@@ -85,7 +90,7 @@ const Summary = ({
             className={`mr-1 h-fit items-center ${
               !tempUnit ? "text-black dark:text-white" : "text-gray-400"
             }`}
-            onClick={() => toggleTempUnit()}
+            onClick={toggleTempUnit}
           >
             °C
           </button>
@@ -94,7 +99,7 @@ const Summary = ({
             className={`mr-1 h-fit items-center ${
               tempUnit ? "text-black dark:text-white" : "text-gray-400"
             }`}
-            onClick={() => toggleTempUnit()}
+            onClick={toggleTempUnit}
           >
             °F
           </button>
