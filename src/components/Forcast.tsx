@@ -32,7 +32,7 @@ const Forecast = ({
     return formattedDate;
   }
 
-  const fsd = weatherData.forecast.forecastday.map((days) => {
+  const fsd = weatherData.forecast.forecastday.map((days:any) => {
     return {
       day: formatDateTime(days.date),
       icon_url: "https:" + days.day.condition.icon,
