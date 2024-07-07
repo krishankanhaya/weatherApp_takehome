@@ -28,6 +28,7 @@ function App() {
       try {
         const res = await fetchWeatherData(city);
         setWeatherData(res);
+        console.log(res);
         if (res) {
           setWeatherData(res);
           setIsLoading(false);

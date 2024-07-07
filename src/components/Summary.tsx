@@ -54,7 +54,7 @@ const Summary = ({
   const summaryData: any = forecastData?.[day]?.[hour];
 
   const toggleTempUnit = () => {
-    setTempUnit((prev) => !prev);
+    setTempUnit(!tempUnit);
   };
 
   if (!summaryData) {
