@@ -26,9 +26,10 @@ jobs:
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
         run: npm run build
 
+      - name: Verify build output
+        run: ls -la dist
+
       - name: Deploy
         run: |
-          # Add your deployment steps here
-          # Example for deploying to GitHub Pages
           npm install -g gh-pages
           gh-pages -d dist
