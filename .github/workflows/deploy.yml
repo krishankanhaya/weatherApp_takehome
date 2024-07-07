@@ -27,9 +27,14 @@ jobs:
         run: npm run build
 
       - name: Verify build output
-        run: ls -la dist
+        run: |
+          echo "Contents of the project root directory after build:"
+          ls -la
+          echo "Contents of the dist directory:"
+          ls -la dist || echo "dist directory does not exist"
 
       - name: Deploy
+        if: success() && always()
         run: |
           npm install -g gh-pages
           gh-pages -d dist
