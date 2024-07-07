@@ -64,6 +64,7 @@ const WindChart = ({
 
   const handleGraphClicks = (event: any, elements:any) => {
     if (elements.length > 0) {
+        console.log(event)
       const index = elements[0].index;
       setHour(index);
     }

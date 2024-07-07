@@ -62,10 +62,11 @@ const PrecipitationChart = ({
   });
 
   const handleGraphClicks = (
-    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
-    elements: { datasetIndex: number; index: number }[]
+    event:any,
+    elements: any
   ) => {
     if (elements.length > 0) {
+      console.log(event)
       const index = elements[0].index;
       setHour(index);
     }

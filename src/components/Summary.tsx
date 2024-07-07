@@ -20,11 +20,6 @@ const Summary = ({
     // Create a new Date object from the input string
     const date = new Date(dateString);
 
-    // Check if the date is valid
-    if (isNaN(date)) {
-      throw new Error("Invalid date string");
-    }
-
     // Format the day and time
     const options = {
       weekday: "long",
